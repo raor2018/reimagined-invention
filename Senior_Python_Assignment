@@ -1,23 +1,49 @@
-import datetime as dt
+import time,datetime as dt
 import pandas as pd
+from collections import OrderedDict
 
 
 a = []
 df1 = pd.DataFrame(columns=['Organization', 'Experience', 'FirstName', 'LastName'])
 df2 = pd.DataFrame(columns=['Experience/age_ratio','Organization'])
+#df3 = pd.DataFrame(columns=['Organization', 'Experience', 'FirstName', 'LastName','Experience/age_ratio'])
 
 while True:
     #print('a_value::\n',a)
     x = input('Enter the Values:')
     try:
         if x.lower() == 'sort':
-            tme =  str(dt.datetime.now())
+            #tme =  str(dt.datetime.now())
             #print(tme[-10:-1])
-            df1.to_csv('Log_sort1'+tme[-10:-1].replace(':','').replace('.','').replace(' ','')+'.txt', header=None, index=None, sep='\t', mode='a')
-            #df1.to_csv('Log_sort1.txt', header=None, index=None, sep='\t', mode='a')
-            df2.to_csv('Log_sort2'+tme[-10:-1].replace(':','').replace('.','').replace(' ','')+'.txt', header=None, index=None, sep='\t', mode='a')
-            frames = [pd.read_csv(''), pd.read_csv('f2.csv')]
-            result = concat(frames,ignore_index=True)
+            #df1.to_csv('Log_sort1'+tme[-10:-1].replace(':','').replace('.','').replace(' ','')+'.txt', header=None, index=None, sep='\t', mode='a')
+            
+            df1.drop_duplicates(inplace = True)
+            df1.to_csv('Log_sort1.txt', header=None, index=None, sep='\t', mode='a')
+            #df1['Organization'] = np.arange(df1.shape[0])
+            #df2.to_csv('Log_sort2'+tme[-10:-1].replace(':','').replace('.','').replace(' ','')+'.txt', header=None, index=None, sep='\t', mode='a')
+            df2.drop_duplicates(inplace = True)
+            df2.to_csv('Log_sort2.txt', header=None, index=None, sep='\t', mode='a')
+            
+            df1 = pd.DataFrame(columns=['Organization', 'Experience', 'FirstName', 'LastName'])
+            time.sleep(5) 
+            df2 = pd.DataFrame(columns=['Experience/age_ratio','Organization'])
+            time.sleep(5) 
+            #df2['Organization'] = np.arange(df2.shape[0])
+            filenames = ['Log_sort1.txt', 'Log_sort2.txt']
+            """with open('Log_append.txt', 'a') as outfile:
+                for fname in filenames:
+                    with open(fname) as infile:
+                        outfile.write(infile.read())"""
+            df_list = []
+            for file in filenames:
+                
+                df_list.append(pd.read_csv(file, header=None))
+
+            big_df = pd.concat(df_list, ignore_index=True)
+            big_df.to_csv("Log_append.txt", header=False, index=False)
+            
+            #df3 = pandas.concat([df1,df2]).drop_duplicates().reset_index(drop=True)
+           
         elif x.lower() == 'exit':
             break
         else:
