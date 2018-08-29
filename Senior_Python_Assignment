@@ -1,0 +1,31 @@
+import datetime as dt
+import pandas as pd
+
+
+a = []
+df1 = pd.DataFrame(columns=['Organization', 'Experience', 'FirstName', 'LastName'])
+df2 = pd.DataFrame(columns=['Experience/age_ratio','Organization'])
+
+while True:
+    #print('a_value::\n',a)
+    x = input('Enter the Values:')
+    try:
+        if x.lower() == 'sort':
+            tme =  str(dt.datetime.now())
+            #print(tme[-10:-1])
+            df1.to_csv('Log_sort1'+tme[-10:-1].replace(':','').replace('.','').replace(' ','')+'.txt', header=None, index=None, sep='\t', mode='a')
+            #df1.to_csv('Log_sort1.txt', header=None, index=None, sep='\t', mode='a')
+            df2.to_csv('Log_sort2'+tme[-10:-1].replace(':','').replace('.','').replace(' ','')+'.txt', header=None, index=None, sep='\t', mode='a')
+            frames = [pd.read_csv(''), pd.read_csv('f2.csv')]
+            result = concat(frames,ignore_index=True)
+        elif x.lower() == 'exit':
+            break
+        else:
+            a.append(x.split(','))
+            srt = a[-1]
+            #print(srt[4],' ',srt[3],' ',srt[0],' ',srt[1])
+            #print(srt[3], '/', srt[2], ' ', srt[4])
+            df1.loc[len(df1)] = [srt[4],srt[3],srt[0],srt[1]]
+            df2.loc[len(df2)] = [str(srt[3]+'/'+srt[2]), srt[4]]
+    except:
+        print('Enter the input before SORT')
